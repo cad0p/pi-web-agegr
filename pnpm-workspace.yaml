@@ -1,0 +1,19 @@
+# pnpm workspace configuration
+#
+# allowBuilds: packages with postinstall scripts that pnpm 11 blocks by
+# default (ignored-builds). @google/genai and protobufjs are transitive deps
+# of @earendil-works/pi-coding-agent; unrs-resolver is a transitive dep of
+# eslint (via eslint-import-resolver). sharp 0.35 ships prebuilt binaries
+# and needs no build approval.
+#
+# minimumReleaseAgeExclude: pnpm 11's supply-chain guard skips packages
+# younger than 24h. Our own freshly-published calver prereleases on the
+# `next` dist-tag are always <24h old when consumers first pull them, so
+# exclude the whole @cad0p scope (same setting as ~/.pi/agent/npm/).
+allowBuilds:
+  '@google/genai': true
+  protobufjs: true
+  unrs-resolver: true
+
+minimumReleaseAgeExclude:
+  - '@cad0p/*'

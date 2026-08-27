@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          # Major-only pin: stay on pnpm 11 (new majors can change lockfile
+          # format / CLI surface) while 11.x minors flow in automatically.
+          # The `packageManager` field is intentionally absent so local
+          # machines can use their own pnpm (mise) without the launcher
+          # self-switching. `--frozen-lockfile` keeps installs deterministic
+          # across minors.
+          version: 11
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Type check
+        run: ./node_modules/.bin/tsc --noEmit
+      - name: Lint
+        run: pnpm lint
+      - name: Test
+        run: pnpm test
