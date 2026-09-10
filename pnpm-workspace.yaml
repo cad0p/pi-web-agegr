@@ -3,8 +3,14 @@
 # allowBuilds: packages with postinstall scripts that pnpm 11 blocks by
 # default (ignored-builds). @google/genai and protobufjs are transitive deps
 # of @earendil-works/pi-coding-agent; unrs-resolver is a transitive dep of
-# eslint (via eslint-import-resolver). sharp 0.35 ships prebuilt binaries
-# and needs no build approval.
+# eslint (via eslint-import-resolver). node-pty patches/loads its native
+# spawn-helper from an install script (upstream runs it under npm), and
+# esbuild's postinstall wires up its platform binary. sharp 0.35 ships
+# prebuilt binaries and needs no build approval.
+#
+# NOTE: pnpm auto-inserts placeholder entries ("set this to true or false")
+# for every newly-ignored build script on install — replace them with an
+# explicit decision instead of leaving the placeholders in the file.
 #
 # minimumReleaseAgeExclude: pnpm 11's supply-chain guard skips packages
 # younger than 24h. Our own freshly-published calver prereleases on the
@@ -12,6 +18,8 @@
 # exclude the whole @cad0p scope (same setting as ~/.pi/agent/npm/).
 allowBuilds:
   '@google/genai': true
+  esbuild: true
+  node-pty: true
   protobufjs: true
   unrs-resolver: true
 
