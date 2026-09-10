@@ -11,5 +11,6 @@ All notable changes to this project will be documented in this file.
 ### ⚙️ Miscellaneous Tasks
 
 - Migrate to pnpm and add semver-calver-release npm publishing (closes #2)
+- *(sync)* Merge upstream/main v0.9.0 into the fork (closes #4)
 
 
